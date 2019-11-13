@@ -3,6 +3,7 @@ import flask
 from keras.models import Sequential
 from keras.models import model_from_json
 from keras.layers import Dense
+import os
 import numpy as np
 
 app = flask.Flask(__name__)
@@ -78,6 +79,6 @@ def load_model(model):
 
 # start the flask app, allow remote connections
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
-
+   port = int(os.environ.get("PORT", 5000))
+   app.run(debug=True, port=port)
 
