@@ -13,12 +13,13 @@ app = flask.Flask(__name__)
 def getPrediction():
     values = []
     keys = []
-    
+    model = 1
     # check for passed in parameters   
-    params = flask.request.json
+    params = flask.request.get_json()
+    print(flask.request.get_json())
     if params is None:
         params = flask.request.args
-    
+    print(params)
     # if parameters are found, echo the msg parameter 
     if "model" in params.keys(): 
         model = int(params["model"])
@@ -80,5 +81,5 @@ def load_model(model):
 # start the flask app, allow remote connections
 if __name__ == '__main__':
    port = int(os.environ.get("PORT", 5000))
-   app.run(port=port)
+   app.run(debug=False, port=port, threaded=False)
 
