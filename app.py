@@ -3,6 +3,7 @@ import flask
 from keras.models import Sequential
 from keras.models import model_from_json
 from keras.layers import Dense
+from keras import backend as back
 import os
 import numpy as np
 
@@ -26,8 +27,10 @@ def getPrediction():
             if(key != "model"):
                 values.append(value)
     
+    print(model, values)
+    back.clear_session()
     result = predictClass(model, values)
-    print(result)
+    back.clear_session()
     # return a response in json format 
     return flask.jsonify(result)
 
@@ -54,7 +57,6 @@ def load_model(model):
         loaded_model = model_from_json(loaded_model_json)
         loaded_model.load_weights("models/diab_model.h5")
         loaded_model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-        loaded_model.save("d_model")
 
     elif(model == 2):
         json_file = open('models/cancer_model.json', 'r')
