@@ -1,4 +1,4 @@
-#!/home/matt/Documents/work/GP/medi_AI/flask/env/bin/python
+#!/home/matt/Documents/work/GP/flask/flask_serv/env/bin/python
 
 import sys
 import getopt

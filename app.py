@@ -6,6 +6,7 @@ from keras.layers import Dense
 from keras import backend as back
 import os
 import numpy as np
+from numpy import loadtxt
 
 app = flask.Flask(__name__)
 # define a predict function as an endpoint 
@@ -30,8 +31,13 @@ def getPrediction():
     
     print(model, values)
     back.clear_session()
-    result = predictClass(model, values)
+    prediction, acc = predictClass(model, values)
     back.clear_session()
+
+    result = {
+        'prediction': prediction,
+        'acc': acc
+    }
     # return a response in json format 
     return flask.jsonify(result)
 
@@ -44,8 +50,35 @@ def predictClass(inmodel, inputs):
     # test - numpy array with vars
     prediction = model.predict(test)
 
+    if inmodel == 1:
+        datasetPath = './datasets/pima_indians_diabetes.csv'
+        dataset = loadtxt(datasetPath, delimiter=',')
+
+        inputData = dataset[:,0:8]
+        output = dataset[:,8]
+
+        acc = model.evaluate(inputData, output)
+    
+    elif inmodel == 2:
+        datasetPath = './datasets/breast_cancer.csv'
+        dataset = loadtxt(datasetPath, delimiter=',')
+
+        inputData = dataset[:,0:9]
+        output = dataset[:,9]
+
+        acc = model.evaluate(inputData, output)
+    
+    elif inmodel == 3:
+        datasetPath = './datasets/heart_disease.csv'
+        dataset = loadtxt(datasetPath, delimiter=',')
+
+        inputData = dataset[:,0:13]
+        output = dataset[:,13]
+
+        acc = model.evaluate(inputData, output)
+
     # add this to json and return prediction[0]*100
-    return int(prediction[0]*100)
+    return int(prediction[0]*100), int(acc[1]*100)
 
     # add patient details to database
 
