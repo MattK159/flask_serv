@@ -27,6 +27,8 @@ def getPrediction():
         model = int(params["model"])
         for key,value in params.items():
             if(key != "model"):
+                print(typeof(value))
+                print(value)
                 values.append(value)
     
     print(model, values)
@@ -39,6 +41,7 @@ def getPrediction():
         'acc': acc
     }
     # return a response in json format 
+    print("Returning " + result)
     return flask.jsonify(result)
 
 def predictClass(inmodel, inputs):
